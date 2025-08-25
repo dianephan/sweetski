@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sweetski Map</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/map.css') }}">
+</head>
+<body>
+    <a href="{{ url_for('index') }}" class="back-button">← Back to Diary</a>
+    <div id="map"></div>
+
+    <script>
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12,
+                center: { lat: {{ center_lat }}, lng: {{ center_lng }} },
+                styles: [
+                    {
+                        "featureType": "poi.business",
+                        "stylers": [{"visibility": "off"}]
+                    },
+                    {
+                        "featureType": "transit",
+                        "elementType": "labels.icon",
+                        "stylers": [{"visibility": "off"}]
+                    }
+                ]
+            });
+
+            const markers = {{ markers|tojson|safe }};
+            markers.forEach(marker => {
+                const markerObj = new google.maps.Marker({
+                    position: { lat: marker.lat, lng: marker.lng },
+                    map: map,
+                    url: marker.url,
+                    notion_url: marker.notion_url,
+                    title: marker.title,
+                    animation: google.maps.Animation.DROP
+                });
+                console.log("markerObj: ", markerObj);
+
+                // Add info window
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `<div style="font-family: 'Quicksand', sans-serif;">
+                                <h3 style="margin: 0 0 5px 0;">${marker.title}</h3>
+                                <p style="margin: 0;">🍧 Click to view details</p>
+                                <a href="${marker.url}" target="_blank" class="entry-link">
+                                    🍽️ View on Tabelog
+                                </a>
+                                <a href="${marker.notion_url}" target="_blank" class="entry-link notion-link">
+                                    📝 View in Notion
+                                </a>
+                                
+                            </div>`
+                });
+
+                markerObj.addListener('click', () => {
+                    infoWindow.open(map, markerObj);
+                });
+            });
+        }
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=initMap">
+    </script>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZQT1K7DBMS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-ZQT1K7DBMS');
+    </script>
+</body>
+</html>

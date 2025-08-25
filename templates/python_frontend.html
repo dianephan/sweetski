@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweetski - Python-Powered Dessert Adventure</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower:wght@400;700&family=Comic+Neue:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="page-container">
+        <!-- Map Button -->
+        <a href="{{ url_for('map') }}" class="map-button">
+            <div class="bookmark">
+                <div class="bookmark-icon">🗺️</div>
+                <div class="bookmark-text">View Map</div>
+            </div>
+        </a>
+
+        <!-- Main Diary Section (Left Side) -->
+        <div class="diary-main">
+            <div class="diary-container">
+                <div class="diary-cover">
+                    <div class="diary-title">
+                        <h1>✨ Sweetski ✨</h1>
+                        <p class="subtitle">Python-Powered Dessert Adventure - PyCon Edition</p>
+                    </div>
+                    
+                    <div class="diary-content">
+                        <!-- New Entry Form -->
+                        <div class="new-entry-section">
+                            <h2>🍰 Add New Dessert Adventure</h2>
+                            <form action="{{ url_for('add_entry') }}" method="POST" class="entry-form">
+                                <div class="form-group">
+                                    <label for="link_url">🔗 Restaurant Link/URL:</label>
+                                    <input type="url" id="link_url" name="link_url" required 
+                                           placeholder="https://tabelog.com/...">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="notes">📝 Notes & Thoughts:</label>
+                                    <textarea id="notes" name="notes" rows="4" required 
+                                              placeholder="What did you try? How was it?"></textarea>
+                                </div>
+                                
+                                <button type="submit" class="submit-btn">✨ Save Adventure ✨</button>
+                            </form>
+                        </div>
+
+                        <!-- Flash Messages -->
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                <div class="flash-messages">
+                                    {% for category, message in messages %}
+                                        <div class="flash-message {{ category }}">{{ message }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+
+                        <!-- Previous Entries -->
+                        <div class="entries-section">
+                            <h2>📖 Your Dessert Adventures</h2>
+                            {% if entries %}
+                                {% for entry in entries %}
+                                    <div class="entry-card">
+                                        <div class="entry-header">
+                                            <h3 class="entry-title">
+                                                <div class="entry-links">
+                                                    <a href="{{ entry.url }}" target="_blank" class="entry-link">
+                                                        🍽️ View on Tabelog
+                                                    </a>
+                                                    <a href="{{ entry.notion_url }}" target="_blank" class="entry-link notion-link">
+                                                        📝 View in Notion
+                                                    </a>
+                                                </div>
+                                            </h3>
+                                            {% if entry.date %}
+                                                <span class="entry-date">{{ entry.date }}</span>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        {% if entry.content %}
+                                            <p class="entry-content">{{ entry.content }}</p>
+                                        {% endif %}
+                                        
+                                        <!-- Tabelog Data Display -->
+                                        {% if entry.tabelog_data and entry.tabelog_data.name %}
+                                            <div class="tabelog-data">
+                                                <h4>🍜 Restaurant Info:</h4>
+                                                <div class="restaurant-details">
+                                                    <div class="restaurant-name">{{ entry.tabelog_data.name }}</div>
+                                                    {% if entry.tabelog_data.rating %}
+                                                        <div class="rating">⭐ {{ entry.tabelog_data.rating }}/5.0</div>
+                                                    {% endif %}
+                                                    {% if entry.tabelog_data.categories %}
+                                                        <div class="categories">
+                                                            {% for category in entry.tabelog_data.categories %}
+                                                                <span class="category-tag">{{ category }}</span>
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% endif %}
+                                                    {% if entry.tabelog_data.address %}
+                                                        <div class="address">📍 {{ entry.tabelog_data.address }}</div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p class="no-entries">No dessert adventures yet! Add your first one! 🍰</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
