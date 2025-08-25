@@ -1,0 +1,59 @@
+#map {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.back-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    padding: 10px 20px;
+    background: white;
+    border: 2px solid #ffb6c1;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #333;
+    font-family: 'Quicksand', sans-serif;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    background: #ffb6c1;
+    color: white;
+}
+
+/* Info Window Styles */
+.entry-link {
+    display: block;
+    margin: 5px 0;
+    padding: 6px 12px;
+    border-radius: 15px;
+    text-decoration: none;
+    color: #333;
+    background: linear-gradient(45deg, #ffb6c1, #ffc0cb);
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.entry-link:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.entry-link.notion-link {
+    background: linear-gradient(45deg, #90ee90, #98fb98);
+}
