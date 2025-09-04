@@ -157,43 +157,45 @@ def get_ai_response(user_input, user_id="example-user", user_name="Anonymous"):
     try:
         # Create LangChain model instance using init_chat_model
         # Map the provider from config_value to LangChain format
-        print("Model:", config_value.model.name, "Provider:", config_value.provider.name)
+        print("Model config:", config_value.model.__dict__)
+        print("Provider config:", config_value.provider.__dict__)
         langchain_provider = map_provider_to_langchain(config_value.provider.name)
-        llm = init_chat_model(
-            model=config_value.model.name,
-            model_provider=langchain_provider,
-        )
+        print("Mapped provider:", langchain_provider)
+        
+        try:
+            llm = init_chat_model(
+                model=config_value.model.name,
+                model_provider=langchain_provider,
+            )
+            # print("LLM initialized successfully:", llm)
+        except Exception as model_init_error:
+            print("Error initializing LLM:", str(model_init_error))
+            raise
         
         # Prepare messages
-        messages = [message.to_dict() for message in (config_value.messages or [])]
-        messages.append({'role': 'user', 'content': user_input})
-
-        # Get AI response
-        completion = track_langchain_metrics(tracker, lambda: llm.invoke(messages))
-        ai_response = completion.content
+        # print("Config messages:", config_value.messages)
         
+        # Convert messages to LangChain format
+        langchain_messages = []
+        for message in (config_value.messages or []):
+            msg_dict = message.to_dict()
+            if msg_dict['role'] == 'system':
+                langchain_messages.append(SystemMessage(content=msg_dict['content']))
+            elif msg_dict['role'] == 'assistant':
+                langchain_messages.append(AIMessage(content=msg_dict['content']))
+            elif msg_dict['role'] == 'user':
+                langchain_messages.append(HumanMessage(content=msg_dict['content']))
+        
+        # Add the new user message
+        langchain_messages.append(HumanMessage(content=user_input))
+                
+        # Get AI response
+        completion = track_langchain_metrics(tracker, lambda: llm.invoke(langchain_messages))
+        ai_response = completion.content
+
+        # print statement is not working
         return {"response": ai_response, "model": config_value.model.name, "provider": config_value.provider.name}
 
     except Exception as e:
         return {"error": str(e)}
 
-
-# @app.route('/chat', methods=['POST'])
-# def chat():        
-#     data = request.get_json()
-#     user_input = data.get('message', '')
-#     user_id = data.get('user_id', 'example-user')
-#     user_name = data.get('user_name', 'Anonymous')
-    
-#     if not user_input:
-#         return jsonify({"error": "No message provided"}), 400
-        
-#     result = get_ai_response(user_input, user_id, user_name)
-    
-#     # Save response to JSON file if we have a valid response
-#     # isinstance(result, dict) and 'response' in result is to check if the result is a dictionary and if the response key is in the dictionary
-#     # built in function to check if a key is in a dictionary
-#     if isinstance(result, dict) and 'response' in result:
-#         save_response_to_json(user_input, result['response'])
-    
-#     return jsonify(result)
