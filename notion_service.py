@@ -20,7 +20,8 @@ class NotionService:
             
             # Scrape Tabelog data if it's a Tabelog URL
             tabelog_data = None
-            if "tabelog.com" in link_url:
+            if self.validate_url(link_url):
+            # if "tabelog.com" in link_url:
                 tabelog_data = scrape_tabelog(link_url)
             
             # Prepare properties for Notion
