@@ -91,6 +91,10 @@ body {
     font-size: 1rem;
     transition: all 0.3s ease;
     background: #fff;
+    width: 100%;
+    -webkit-appearance: none; /* Removes default iOS styling */
+    appearance: none;
+    max-width: 100%; /* Prevents horizontal overflow */
 }
 
 .form-group input:focus, .form-group textarea:focus {
@@ -115,6 +119,14 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(255, 182, 193, 0.3);
+    -webkit-appearance: none; /* Removes default iOS styling */
+    appearance: none;
+    width: auto;
+    min-height: 44px; /* Minimum touch target size */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .submit-btn:hover {
@@ -138,42 +150,86 @@ body {
     border-radius: 12px;
     padding: 20px;
     transition: all 0.3s ease;
-    cursor: pointer;
+    margin-bottom: 15px;
+    position: relative;
+    overflow: hidden;
 }
 
-.entry-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    border-color: #ffb6c1;
+/* Desktop hover effects */
+@media (min-width: 769px) {
+    .entry-card {
+        cursor: pointer;
+    }
+
+    .entry-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        border-color: #ffb6c1;
+    }
+}
+
+/* Mobile touch effects */
+@media (max-width: 768px) {
+    .entry-card {
+        padding: 15px;
+    }
+
+    .entry-card:active {
+        background-color: #fff5f5;
+        border-color: #ffb6c1;
+    }
 }
 
 .entry-title {
     font-weight: 600;
     color: #8b4513;
     font-size: 1.2rem;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 }
 
 .entry-links {
     display: flex;
-    gap: 10px;
+    gap: 12px;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .entry-link {
-    padding: 6px 12px;
+    padding: 10px 16px;
     border-radius: 15px;
     text-decoration: none;
     color: #333;
     background: linear-gradient(45deg, #ffb6c1, #ffc0cb);
-    font-size: 0.9rem;
+    font-size: 1rem;
     transition: all 0.3s ease;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    min-width: 150px;
+    max-width: 100%;
+    -webkit-tap-highlight-color: transparent;
 }
 
-.entry-link:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 3px 8px rgba(255, 182, 193, 0.3);
+/* Desktop hover effects */
+@media (min-width: 769px) {
+    .entry-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 3px 8px rgba(255, 182, 193, 0.3);
+    }
+}
+
+/* Mobile touch effects */
+@media (max-width: 768px) {
+    .entry-link {
+        padding: 12px 20px;
+    }
+
+    .entry-link:active {
+        transform: scale(0.98);
+        background: linear-gradient(45deg, #ffc0cb, #ffd1dc);
+    }
 }
 
 .entry-link.notion-link {
@@ -408,56 +464,104 @@ body {
 /* Bookmark Button Styles */
 .map-button {
     position: fixed;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
     text-decoration: none;
     z-index: 1000;
-}
-
-.bookmark {
-    background: linear-gradient(45deg, #ffb6c1, #ffc0cb);
-    padding: 15px 20px 15px 15px;
-    border-radius: 0 20px 20px 0;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    position: relative;
 }
 
-.bookmark::before {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 0;
-    width: 10px;
-    height: 10px;
-    background: #ff9caa;
-    clip-path: polygon(0 0, 100% 0, 100% 100%);
+/* Desktop styles */
+@media (min-width: 769px) {
+    .map-button {
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .bookmark {
+        background: linear-gradient(45deg, #ffb6c1, #ffc0cb);
+        padding: 15px 20px 15px 15px;
+        border-radius: 0 20px 20px 0;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        position: relative;
+    }
+
+    .bookmark::before {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 10px;
+        height: 10px;
+        background: #ff9caa;
+        clip-path: polygon(0 0, 100% 0, 100% 100%);
+    }
+
+    .bookmark-icon {
+        font-size: 24px;
+        margin-bottom: 5px;
+    }
+
+    .bookmark-text {
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        color: #333;
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: 1px;
+    }
+
+    .bookmark:hover {
+        transform: translateX(5px);
+        box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.15);
+        background: linear-gradient(45deg, #ffc0cb, #ffd1dc);
+    }
 }
 
-.bookmark-icon {
-    font-size: 24px;
-    margin-bottom: 5px;
-}
+/* Mobile styles */
+@media (max-width: 768px) {
+    .map-button {
+        bottom: 20px;
+        right: 20px;
+        left: auto;
+        top: auto;
+        transform: none;
+    }
 
-.bookmark-text {
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    color: #333;
-    font-family: 'Quicksand', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    letter-spacing: 1px;
-}
+    .bookmark {
+        background: linear-gradient(45deg, #ffb6c1, #ffc0cb);
+        padding: 12px;
+        border-radius: 50%;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
+    }
 
-.bookmark:hover {
-    transform: translateX(5px);
-    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.15);
-    background: linear-gradient(45deg, #ffc0cb, #ffd1dc);
+    .bookmark::before {
+        display: none;
+    }
+
+    .bookmark-icon {
+        font-size: 28px;
+        margin: 0;
+    }
+
+    .bookmark-text {
+        display: none;
+    }
+
+    .bookmark:active {
+        transform: scale(0.95);
+        background: linear-gradient(45deg, #ffc0cb, #ffd1dc);
+    }
 }
 
 .diary-main {
@@ -467,29 +571,104 @@ body {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
     .diary-container {
         margin: 10px;
         border-radius: 15px;
+        width: 95%;
     }
     
     .diary-title h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
     }
     
     .diary-content {
-        padding: 20px;
+        padding: 15px;
     }
     
     .new-entry-section, .entries-section {
-        padding: 20px;
+        padding: 15px;
+        margin-bottom: 25px;
+    }
+
+    .form-group input, .form-group textarea {
+        padding: 10px;
+        font-size: 16px; /* Prevents iOS zoom on focus */
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
     }
     
     .entry-actions {
         flex-direction: column;
+        gap: 8px;
+    }
+
+    .entry-links {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .entry-link {
+        text-align: center;
+        padding: 10px;
+        margin: 2px 0;
     }
     
     .category-tag {
-        display: block;
-        margin: 4px 0;
+        display: inline-block;
+        margin: 3px;
+        padding: 6px 12px;
+    }
+
+    .tabelog-data {
+        padding: 12px;
+    }
+
+    .restaurant-details {
+        font-size: 0.9rem;
+    }
+
+    /* Improve touch targets */
+    .entry-card {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .entry-card:hover {
+        transform: none; /* Disable hover effects on mobile */
+    }
+
+    .entry-link:hover {
+        transform: none;
+    }
+}
+
+/* Additional breakpoint for very small devices */
+@media (max-width: 480px) {
+    .diary-title h1 {
+        font-size: 1.5rem;
+    }
+
+    .diary-content {
+        padding: 10px;
+    }
+
+    .new-entry-section h2, .entries-section h2 {
+        font-size: 1.3rem;
+    }
+
+    .entry-title {
+        font-size: 1.1rem;
     }
 } 

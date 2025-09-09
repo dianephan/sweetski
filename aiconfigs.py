@@ -172,9 +172,6 @@ def get_ai_response(user_input, user_id="example-user", user_name="Anonymous"):
             print("Error initializing LLM:", str(model_init_error))
             raise
         
-        # Prepare messages
-        # print("Config messages:", config_value.messages)
-        
         # Convert messages to LangChain format
         langchain_messages = []
         for message in (config_value.messages or []):
@@ -193,7 +190,6 @@ def get_ai_response(user_input, user_id="example-user", user_name="Anonymous"):
         completion = track_langchain_metrics(tracker, lambda: llm.invoke(langchain_messages))
         ai_response = completion.content
 
-        # print statement is not working
         return {"response": ai_response, "model": config_value.model.name, "provider": config_value.provider.name}
 
     except Exception as e:
