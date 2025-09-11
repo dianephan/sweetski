@@ -103,6 +103,12 @@
                                                     {% if entry.tabelog_data.address %}
                                                         <div class="address">📍 {{ entry.tabelog_data.address }}</div>
                                                     {% endif %}
+                                                    
+                                                    {% if entry.ai_model_info %}
+                                                        <div class="ai-info">
+                                                            <div class="ai-model">Model: {{ entry.ai_model_info }}</div>
+                                                        </div>
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                         {% endif %}
