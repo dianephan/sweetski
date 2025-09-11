@@ -34,25 +34,6 @@ def parse_coordinates(ai_response):
         coordinates = None
     return coordinates
 
-def save_response_to_json(user_input, ai_response):
-    """Save user input and AI response with coordinates to JSON in a single line"""
-    
-    # Parse coordinates from the AI response string
-    parsed_coordinates = parse_coordinates(ai_response)
-    print("parsed_coordinates: ", parsed_coordinates)
-    
-    entry = {
-        "timestamp": datetime.datetime.now().isoformat(),
-        "url": user_input,
-        "ai_response": ai_response,
-        "latitude": parsed_coordinates["latitude"] if parsed_coordinates else None,
-        "longitude": parsed_coordinates["longitude"] if parsed_coordinates else None,
-    }
-    
-    with open('responses.json', 'a') as f:
-        json.dump(entry, f)
-        f.write('\n')  # Add newline for each JSON entry
-
 def map_provider_to_langchain(provider_name):
     """Map LaunchDarkly provider names to LangChain provider names."""
     # Add any additional provider mappings here as needed.
@@ -160,7 +141,7 @@ def get_ai_response(user_input, user_id="example-user", user_name="Anonymous"):
         print("Model config:", config_value.model.__dict__)
         print("Provider config:", config_value.provider.__dict__)
         langchain_provider = map_provider_to_langchain(config_value.provider.name)
-        print("Mapped provider:", langchain_provider)
+        # print("Mapped provider:", langchain_provider)
         
         try:
             llm = init_chat_model(
