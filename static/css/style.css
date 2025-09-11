@@ -290,6 +290,24 @@ body {
     color: #666;
     font-size: 0.9rem;
     font-style: italic;
+    margin-bottom: 10px;
+}
+
+.ai-info {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed #ffe4e1;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.ai-model, .ai-provider {
+    display: inline-block;
+    margin-right: 15px;
+    padding: 4px 8px;
+    background: #fff5f5;
+    border-radius: 8px;
+    font-family: 'Quicksand', monospace;
 }
 
 .entry-actions {
