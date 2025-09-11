@@ -12,7 +12,7 @@ class NotionService:
         """Validate URL format"""
         return url.startswith("https://tabelog.com/en/")
 
-    def create_entry(self, link_url, notes, latitude=None, longitude=None):
+    def create_entry(self, link_url, notes, latitude=None, longitude=None, ai_model_info=None):
         """Create a new entry in Notion with Tabelog data"""
         try:
             if not self.database_id:
@@ -72,6 +72,14 @@ class NotionService:
                             "text": {"content": tabelog_data["address"]}
                         }]
                     }
+
+            if ai_model_info:
+                properties["AI_Model"] = {
+                    "rich_text": [{
+                        "type": "text",
+                        "text": {"content": ai_model_info["provider"]}
+                    }]
+                }
 
             # Create page in Notion
             self.notion.pages.create(
@@ -162,6 +170,11 @@ class NotionService:
                     longitude_prop = properties["Longitude"]
                     if longitude_prop["type"] == "number" and longitude_prop["number"] is not None:
                         entry["longitude"] = longitude_prop["number"]
+                
+                if "AI_Model" in properties:
+                    ai_model_prop = properties["AI_Model"]
+                    if ai_model_prop["type"] == "rich_text" and ai_model_prop["rich_text"]:
+                        entry["ai_model_info"] = ai_model_prop["rich_text"][0]["plain_text"]
                 
                 entry["tabelog_data"] = tabelog_data
                 entries.append(entry)

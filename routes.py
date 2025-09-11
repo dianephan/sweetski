@@ -34,12 +34,13 @@ def register_routes(app):
                     'url': entry.get('url', ''),  # Tabelog URL
                     'notion_url': entry.get('notion_url', '')
                 }) 
-        print("markers: ", markers)
+        # print("markers: ", markers)
         return render_template('map.html', 
                              api_key=api_key,
                              markers=markers,
-                             center_lat=35.6762,  # Tokyo coordinates
-                             center_lng=139.6503)
+                             center_lat=34.92534863829663,
+                             center_lng=135.79543051024322
+                            )
    
     @app.route('/add_entry', methods=['POST'])
     def add_entry():
@@ -62,8 +63,14 @@ def register_routes(app):
         latitude = float(parsed_coordinates["latitude"]) if parsed_coordinates else None
         longitude = float(parsed_coordinates["longitude"]) if parsed_coordinates else None
         
-        # Save to Notion with Tabelog data
-        success, message = notion_service.create_entry(link_url, notes, latitude, longitude)
+        # Get AI model and provider info
+        model_info = {
+            "model": ai_response.get("model", "Unknown"),
+            "provider": ai_response.get("provider", "Unknown")
+        }
+        
+        # Save to Notion with Tabelog data and AI info
+        success, message = notion_service.create_entry(link_url, notes, latitude, longitude, ai_model_info=model_info)
         
         if success:
             flash(message, 'success')
