@@ -18,7 +18,6 @@ class NotionService:
             if not self.database_id:
                 return False, "Database ID not configured"
             
-            # Scrape Tabelog data if it's a Tabelog URL
             tabelog_data = None
             if self.validate_url(link_url):
             # if "tabelog.com" in link_url:
