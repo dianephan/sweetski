@@ -10,7 +10,7 @@ class NotionService:
 
     def validate_url(self, url):
         """Validate URL format"""
-        return url.startswith("https://tabelog.com/en/")
+        return "tabelog.com" in url or "s.tabelog.com" in url
 
     def create_entry(self, link_url, notes, latitude=None, longitude=None, ai_model_info=None):
         """Create a new entry in Notion with Tabelog data"""
