@@ -3,15 +3,14 @@ The conference demo encourages people to participate by sharing a Tabelog link t
 
 Here’s a screenshot of the website on a computer browser:
 
-<Frame caption="The project I created to resemble a food diary used during my travels.">
-  ![Photo of project website with pink colors and sparkles resembling a diary](/static/images/sweetskipage.png)
-</Frame>
+![Photo of project website with pink colors and sparkles resembling a diary](/static/images/sweetskipage.png)
+The project I created to resemble a food diary used during my travels.
+
 
 [Twitter/X user Shun tweeted](https://x.com/shunsock/status/1971480933187690834) about a bar they visited with their team.
 
-<Frame caption="The mobile view of a user's diary entry.">
-  ![Photo of user's submitted entry.](/static/images/mobiless.jpeg)
-</Frame>
+![Photo of user's submitted entry.](/static/images/mobiless.jpeg)
+"The mobile view of a user's diary entry.
 
 Video demo coming soon. 
 
